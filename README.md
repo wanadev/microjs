@@ -37,13 +37,11 @@ ujs.ajax({
 ```
 
 ```javascript
-<script>
-  // Récupération du bouton
-  var button = ujs.getById("btnValidate");
+// Récupération du bouton
+var button = ujs.getById("btnValidate");
 
-  // Déclancher l'évenement click
-  ujs.triggerEvent(button, "click");
-</script>
+// Déclancher l'évenement click
+ujs.triggerEvent(button, "click");
 ```
 
 #### Ajouter / Supprimer une classe
@@ -53,16 +51,14 @@ ujs.ajax({
 ```
 
 ```javascript
-<script>
-  // Récupération du bouton
-  var button = ujs.getById("btnValidate");
+// Récupération du bouton
+var button = ujs.getById("btnValidate");
 
-  // Ajoute la classe selected si elle n'est pas déjà présente
-  ujs.addClass(button, "selected");
+// Ajoute la classe selected si elle n'est pas déjà présente
+ujs.addClass(button, "selected");
 
-  // Supprime la classe selected si elle est présente
-  ujs.removeClass(button, "selected");
-</script>
+// Supprime la classe selected si elle est présente
+ujs.removeClass(button, "selected");
 ```
 ### 4. Licence
 
