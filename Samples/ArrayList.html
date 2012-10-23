@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<title>ujs.ArrayList.js sample</title>
+</head>
+<body>
+<div id="content"></div>
+<script src="../ujs.ArrayList.js"></script>
+<script>
+	var list = new ujs.ArrayList();
+	list.add([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+	list.add(45);
+	
+	printElements("Liste de base", list);
+	
+	list.removeAt(4);
+	printElements("Supprimer un élement à une position donnée", list);
+	
+	list.insertAt(4, 42);
+	printElements("Insérer un élement à une position donnée", list);
+	
+	list.remove(1);
+	printElements("Supprimer un élement", list);
+	
+	function printElements(message, list)
+	{
+		var div = document.getElementById("content");
+		var container = document.createElement("div");
+		var title = document.createElement("h3");
+		var content = document.createElement("p");
+		
+		title.innerHTML = message;
+		
+		var elements = [], stringElems = "";
+		
+		list.forEach(function (el) { elements.push(el); });
+		
+		for (var i = 0, l = elements.length; i < l; i++)
+			stringElems += ((i != 0 ? " - " : "") + elements[i]);
+			
+		content.innerHTML = stringElems;
+		
+		container.appendChild(title);
+		container.appendChild(content);
+		div.appendChild(container);
+	}
+</script>
+</body>
+</html>
