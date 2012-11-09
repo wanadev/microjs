@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+</head>
+<body>
+	<div id="content"></div>
+</body>
+<script src="../ujs.Dictionary.js"></script>
+<script>
+	// Création du dictionnaire
+	var dictionary = new ujs.Dictionary();
+	
+	// On ajoute des objets un à un
+	dictionary.add("chat", { name: "Boby", age: 1 });
+	dictionary.add("chien", { name: "Walter", age: 3 });
+	dictionary.add("Peruche", { name: "Ikaku", age: 1 });
+
+	// Création de 2 collections clé/valeur pour être ajoutées en une seule fois dans le dictionnaire
+	var keys = ["animaux", "humains", "reptiles"];
+	var values =  [{ name: "animal", age: 25 }, { name: "humain", age: 48 }, { name: "reptile", age: 18 }];
+	
+	// On ajoute plusieurs objets en une seule fois
+	dictionary.addRange(keys, values);
+	
+	// Affiche le contenu de la collection avec la méthode forEach
+	printForeach("Affichage de la collection avec la méthode forEach", dictionary);
+	
+	// Affiche le contenu de la collection avec la méthode for
+	printFor("Affichage de la collection avec une boucle for", dictionary);
+	
+	// Supression de plusieurs valeurs
+	dictionary.remove("Peruche");
+	dictionary.remove("humains");
+	
+	// Affiche le contenu de la collection avec la méthode for
+	printFor("Affichage de la collection après suppression d'éléments", dictionary);
+	
+	var dico2 = dictionary.clone();
+	dico2.getElement("chat").foo = "bar";
+	dico2.getElement("chat").age = 42;
+	dico2.getElement("chat").name = "Miaouuuuuu";
+	dico2.getElement("chat").bar = "foo";
+	
+	dico2.merge(dictionary);
+	
+	printFor2("Merge de 2 collections", dico2);
+	
+	
+	
+	// Fonction permettant de formater le résultat de la fonction foreach
+	function printForeach(title, dictionary)
+	{
+		var container = document.createElement("div");
+		var h3 = document.createElement("h3");
+		h3.innerHTML = title;
+		var ul = document.createElement("ul");
+		var h5 = document.createElement("h5");
+		var start = new Date();
+	
+		dictionary.forEach(function (key, value) {
+			var li = document.createElement("li");
+			li.innerHTML = "Key: " + key + " - Value: { name: " + value.name + ", age: " + value.age + " }";
+			ul.appendChild(li);
+		});
+		
+		h5.innerHTML = "\nForeach réalisé en " + (new Date() - start) + " ms\n";
+		
+		container.appendChild(h3);
+		container.appendChild(ul);
+		container.appendChild(h5);
+		
+		document.body.appendChild(container);
+	}
+	
+	// Fonction permettant de formater le résultat avec la méthode for
+	function printFor(title, dictionary)
+	{
+		var container = document.createElement("div");
+		var h3 = document.createElement("h3");
+		h3.innerHTML = title;
+		var ul = document.createElement("ul");
+		var h5 = document.createElement("h5");
+		var start = new Date();
+		
+		var start = new Date();
+		
+		for (var i = 0; i < dictionary.length; i++)
+		{
+			var li = document.createElement("li");
+			li.innerHTML = "Key: " + dictionary.getKey(dictionary.getElementAt(i)) + " - Value: { name: " + dictionary.getElementAt(i).name + ", age: " + dictionary.getElementAt(i).age + " }";
+			ul.appendChild(li);
+		}
+		
+		h5.innerHTML = "\nFor réalisé en " + (new Date() - start) + " ms\n";
+		
+		container.appendChild(h3);
+		container.appendChild(ul);
+		container.appendChild(h5);
+		
+		document.body.appendChild(container);
+	}
+	
+	function printFor2(title, dictionary)
+	{
+		var container = document.createElement("div");
+		var h3 = document.createElement("h3");
+		h3.innerHTML = title;
+		var ul = document.createElement("ul");
+		var h5 = document.createElement("h5");
+		var start = new Date();
+		
+		var start = new Date();
+		
+		for (var i = 0; i < dictionary.length; i++)
+		{
+			var element = dictionary.getElementAt(i);
+			
+			var titleKey = document.createElement("h5");
+			titleKey.innerHTML = "Key: " + dictionary.getKey(element);
+			
+			var li = document.createElement("li");
+			var ul2 = document.createElement("ul");
+			
+			for (var j in element)
+			{
+				var li2 = document.createElement("li");
+				li2.innerHTML = j + ": " + element[j];
+				ul2.appendChild(li2);
+			}
+			
+			li.appendChild(titleKey);
+			li.appendChild(ul2);
+
+			ul.appendChild(li);
+		}
+		
+		h5.innerHTML = "\nFor réalisé en " + (new Date() - start) + " ms\n";
+		
+		container.appendChild(h3);
+		container.appendChild(ul);
+		container.appendChild(h5);
+		
+		document.body.appendChild(container);
+	}
+	
+</script>
+</html>

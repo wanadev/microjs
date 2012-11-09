@@ -16,7 +16,8 @@ Vous trouverez aussi quelques extensions pour la bibliothèque afin d'étendre ses
 * Ajout/Suppression d'un style ;
 * Ajax Get et Post (non compatible IE8 et inférieur) ;
 * Quelques alias ;
-* Objet ArrayList (extension).
+* Objet ArrayList (extension) ;
+* Objet Dictionary (extension).
 
 ### 3. Exemples
 
@@ -84,6 +85,37 @@ list.insertAt(4, 42);
 
 // Boucle sur tous les éléments de la collection
 list.forEach(function (el) { elements.push(el); });
+```
+
+#### Utilisation de la classe Dictionary
+```javascript
+// Nouvelle instance de Dictionary
+var dictionary = new ujs.Dictionary();
+
+// Ajoute un élément
+dictionary.add("chat", { name: "Boby", age: 1 });
+
+// Création de 2 collections clé/valeur pour être ajoutées en une seule fois dans le dictionnaire
+var keys = ["animaux", "humains", "reptiles"];
+var values =  [{ name: "animal", age: 25 }, { name: "humain", age: 48 }, { name: "reptile", age: 18 }];
+
+// On ajoute plusieurs objets en une seule fois
+dictionary.addRange(keys, values);
+
+// Supression
+dictionary.remove("humains");
+
+// Création d'une nouvelle collection avec les valeurs d'une autre
+var dico2 = dictionary.clone();
+
+// Modification de l'élément "chat"
+dico2.getElement("chat").foo = "bar";
+dico2.getElement("chat").age = 42;
+dico2.getElement("chat").name = "Miaou";
+dico2.getElement("chat").bar = "foo";
+
+// Fusion de deux dictionnaires
+dico2.merge(dictionary);
 ```
 
 ### 4. Licence
