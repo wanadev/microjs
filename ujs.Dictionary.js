@@ -202,4 +202,36 @@ var ujs = window.ujs || {};
 			that.add(key, value, true);
 		});
 	}
+	
+	ujs.Dictionary.prototype.mergeArray = function (array, merge)
+	{
+		var merge = (typeof (merge) == "boolean") ? merge : false;
+		
+		if (array instanceof Array) {
+			
+			for (var i = 0, l = array.length; i < l; i++) {
+				this.add(i, array[i], merge)
+			}
+		
+			return true;
+		}
+		
+		return false;
+	}
+	
+	ujs.Dictionary.prototype.mergeObject = function (object, merge)
+	{
+		var merge = (typeof (merge) == "boolean") ? merge : false;
+		
+		if (typeof (object) == "object") {
+		
+			for (var i in object) {
+				this.add(i, object[i]);
+			}
+			
+			return true;
+		}
+		
+		return false;
+	}
 })();

@@ -46,7 +46,21 @@
 	
 	printFor2("Merge de 2 collections", dico2);
 	
+	// Merge avec un tableau
+	var myArray = [ "Hello", "World", "I'm a", "programmer" ];
+	dico2.mergeArray(myArray, true);
+	console.log(dico2);
 	
+	// Merge avec un objet
+	var person = {
+		firstName: "John",
+		lastName: "Doe", 
+		age: 27
+	};
+	
+	dico2.mergeObject(person, true);
+	
+	console.log(dico2);
 	
 	// Fonction permettant de formater le résultat de la fonction foreach
 	function printForeach(title, dictionary)
