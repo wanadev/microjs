@@ -226,7 +226,7 @@ var ujs = window.ujs || {};
 		if (typeof (object) == "object") {
 		
 			for (var i in object) {
-				this.add(i, object[i]);
+				this.add(i, object[i], merge);
 			}
 			
 			return true;
