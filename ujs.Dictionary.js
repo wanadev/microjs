@@ -1,20 +1,19 @@
 var ujs = window.ujs || {};
 
-(function ()
-{
+(function () {
 	ujs.Dictionary = function()
 	{
 		this.keys = [];
 		this.values = [];
 		this.length = 0;
-	}
+	};
 	
 	function add(context, key, value)
 	{
 		var position = context.values.push(value) - 1;
 		context.keys[position] = key;
 		context.length += 1;
-	}
+	};
 	
 	// Ajoute un nouvel élement à la collection
 	ujs.Dictionary.prototype.add = function (key, value, merge)
@@ -37,13 +36,12 @@ var ujs = window.ujs || {};
 				}
 			}
 		}
-	}
+	};
 	
 	// Ajoute un groupe d'élement à la collection
 	ujs.Dictionary.prototype.addRange = function (keys, values)
 	{
-		if (keys.length == values.length)
-		{
+		if (keys.length == values.length) {
 			var i = 0, l = keys.length;
 			
 			while (i < l) {
@@ -51,7 +49,7 @@ var ujs = window.ujs || {};
 				i++;
 			}
 		}
-	}
+	};
 	
 	// Vide la collection
 	ujs.Dictionary.prototype.clear = function ()
@@ -59,19 +57,19 @@ var ujs = window.ujs || {};
 		this.values = [];
 		this.keys = [];
 		this.length = 0;
-	}
+	};
 	
 	// Indique si la clé existe dans la collection
 	ujs.Dictionary.prototype.containsKey = function (key)
 	{
 		return this.keys.indexOf(key) > -1;
-	}
+	};
 	
 	// Indique si la valeur existe dans la collection
 	ujs.Dictionary.prototype.containsValue = function (value)
 	{
 		return this.values.indexOf(value) > -1;
-	}
+	};
 	
 	// Supprime un objet de la collection
 	ujs.Dictionary.prototype.remove = function (key)
@@ -86,13 +84,12 @@ var ujs = window.ujs || {};
 		}
 		
 		return removedValue;
-	}
+	};
 	
 	// Supprime plusieurs objets de la collection
 	ujs.Dictionary.prototype.removeRange = function (keys, values)
 	{
-		if (keys.length == values.length)
-		{
+		if (keys.length == values.length) {
 			var i = 0, l = keys.length;
 			
 			while (i < l) {
@@ -100,7 +97,7 @@ var ujs = window.ujs || {};
 				i++;
 			}	
 		}
-	}
+	};
 	
 	// Obtient toutes les valeurs de la collections
 	ujs.Dictionary.prototype.getElements = function ()
@@ -119,7 +116,7 @@ var ujs = window.ujs || {};
 		}
 		
 		return result;
-	}
+	};
 	
 	// Obtient l'élément à la position passée en paramètre
 	ujs.Dictionary.prototype.getElementAt = function (index)
@@ -131,13 +128,13 @@ var ujs = window.ujs || {};
 		}
 		
 		return result;
-	}
+	};
 	
 	// Obtient toutes les clés de la collection
 	ujs.Dictionary.prototype.getKeys = function ()
 	{
 		return this.keys;
-	}
+	};
 	
 	// Obtient la clé de l'élément passé en paramètre
 	ujs.Dictionary.prototype.getKey = function (element)
@@ -150,7 +147,7 @@ var ujs = window.ujs || {};
 		}
 		
 		return result;
-	}
+	};
 	
 	// Obtient la clé à la position passée en paramètre
 	ujs.Dictionary.prototype.getKeyAt = function (index)
@@ -162,7 +159,7 @@ var ujs = window.ujs || {};
 		}
 		
 		return result;
-	}
+	};
 	
 	// Exécute une fonction sur tous les éléments de la collection
 	// Le callback à la signature suivante : function (key, value)
@@ -176,7 +173,7 @@ var ujs = window.ujs || {};
 			callback(this.getKey(element), element);
 			i++;
 		}
-	}
+	};
 	
 	// Clone l'objet en cours et renvoie une nouvelle instance
 	ujs.Dictionary.prototype.clone = function ()
@@ -190,7 +187,7 @@ var ujs = window.ujs || {};
 		}
 		
 		return dictionary;
-	}
+	};
 	
 	// Fusionne 2 dictionnaires
 	// Les propriétés de l'objet en cours sont surchargées
@@ -201,7 +198,7 @@ var ujs = window.ujs || {};
 		dico.forEach(function (key, value) {
 			that.add(key, value, true);
 		});
-	}
+	};
 	
 	ujs.Dictionary.prototype.mergeArray = function (array, merge)
 	{
@@ -217,7 +214,7 @@ var ujs = window.ujs || {};
 		}
 		
 		return false;
-	}
+	};
 	
 	ujs.Dictionary.prototype.mergeObject = function (object, merge)
 	{
@@ -233,5 +230,5 @@ var ujs = window.ujs || {};
 		}
 		
 		return false;
-	}
+	};
 })();
