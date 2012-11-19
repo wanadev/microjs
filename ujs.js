@@ -30,6 +30,8 @@ var ujs = window.ujs || {};
     else {
       events[name] = document.createEvent("HTMLEvents");
       events[name].initEvent(name, true, false);
+
+      return ujs.notify(name, params);
     }
   };
   
