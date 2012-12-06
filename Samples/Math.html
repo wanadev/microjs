@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8" />
+	<title>ujs : Math</title>
+</head>
+<body>
+	<div id="content">
+		<h4>Génération de nombre aléatoire</h4>
+		<p id="sample0"></p>
+		
+		<h4>Math.clamp</h4>
+		<p id="sample1"></p>
+		
+		<h4>Math.lerp</h4>
+		<p id="sample2"></p>
+	</div>
+</body>
+<script src="../ujs.js"></script>
+<script src="../ujs.Math.js"></script>
+<script>
+	var sample0 = ujs.getById("sample0");
+	sample0.innerHTML = "Nombre aléatoire entre 0 et 100 : " + ujs.Math.getRandomInt(0, 100);
+	
+	var sample1 = ujs.getById("sample1");
+	sample1.innerHTML = "Valeur comprise entre 25 et 100 : " + ujs.Math.clamp(45, 25, 100);
+	
+	var sample2 = ujs.getById("sample2");
+	sample2.innerHTML = "Interpolation linéaire  x = 5, y = -4 avec un indice de 0.4 : " + ujs.Math.lerp(5, -4, 0.5);
+</script>
+</html>

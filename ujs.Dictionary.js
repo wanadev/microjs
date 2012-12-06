@@ -15,7 +15,7 @@ var ujs = window.ujs || {};
 		context.length += 1;
 	};
 	
-	// Ajoute un nouvel élement à la collection
+	// Ajoute un nouvel Ã©lement Ã  la collection
 	ujs.Dictionary.prototype.add = function (key, value, merge)
 	{
 		var merge = (typeof(merge) != "undefined") ? merge : false;
@@ -38,7 +38,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Ajoute un groupe d'élement à la collection
+	// Ajoute un groupe d'Ã©lement Ã  la collection
 	ujs.Dictionary.prototype.addRange = function (keys, values)
 	{
 		if (keys.length == values.length) {
@@ -59,7 +59,7 @@ var ujs = window.ujs || {};
 		this.length = 0;
 	};
 	
-	// Indique si la clé existe dans la collection
+	// Indique si la clÃ© existe dans la collection
 	ujs.Dictionary.prototype.containsKey = function (key)
 	{
 		return this.keys.indexOf(key) > -1;
@@ -105,7 +105,7 @@ var ujs = window.ujs || {};
 		return this.values;
 	}
 	
-	// Obtient l'élément identifié par la clé passée en paramètre
+	// Obtient l'Ã©lÃ©ment identifiÃ© par la clÃ© passÃ©e en paramÃ¨tre
 	ujs.Dictionary.prototype.getElement = function(key)
 	{
 		var result = null;
@@ -118,7 +118,7 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Obtient l'élément à la position passée en paramètre
+	// Obtient l'Ã©lÃ©ment Ã  la position passÃ©e en paramÃ¨tre
 	ujs.Dictionary.prototype.getElementAt = function (index)
 	{
 		var result = null;
@@ -130,13 +130,13 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Obtient toutes les clés de la collection
+	// Obtient toutes les clÃ©s de la collection
 	ujs.Dictionary.prototype.getKeys = function ()
 	{
 		return this.keys;
 	};
 	
-	// Obtient la clé de l'élément passé en paramètre
+	// Obtient la clÃ© de l'Ã©lÃ©ment passÃ© en paramÃ¨tre
 	ujs.Dictionary.prototype.getKey = function (element)
 	{
 		var result = null;
@@ -149,7 +149,7 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Obtient la clé à la position passée en paramètre
+	// Obtient la clÃ© Ã  la position passÃ©e en paramÃ¨tre
 	ujs.Dictionary.prototype.getKeyAt = function (index)
 	{
 		var result = null;
@@ -161,8 +161,8 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Exécute une fonction sur tous les éléments de la collection
-	// Le callback à la signature suivante : function (key, value)
+	// ExÃ©cute une fonction sur tous les Ã©lÃ©ments de la collection
+	// Le callback Ã  la signature suivante : function (key, value)
 	ujs.Dictionary.prototype.forEach = function (callback)
 	{
 		var i = 0;
@@ -190,8 +190,8 @@ var ujs = window.ujs || {};
 	};
 	
 	// Fusionne 2 dictionnaires
-	// Les propriétés de l'objet en cours sont surchargées
-	// Les propriétés de l'objet fusionné seront disponibles dans l'objet en cours
+	// Les propriÃ©tÃ©s de l'objet en cours sont surchargÃ©es
+	// Les propriÃ©tÃ©s de l'objet fusionnÃ© seront disponibles dans l'objet en cours
 	ujs.Dictionary.prototype.merge = function (dico)
 	{
 		var that = this;

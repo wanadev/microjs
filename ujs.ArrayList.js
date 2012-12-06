@@ -7,7 +7,7 @@ var ujs = window.ujs || {};
 		this.length = 0;
 	};
 	
-	// Ajoute un élement ou un tableau d'élement à la collection
+	// Ajoute un Ã©lement ou un tableau d'Ã©lement Ã  la collection
 	ujs.ArrayList.prototype.add = function (element)
 	{
 		var size = element.length;
@@ -25,7 +25,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Compte le nombre d'élements dans la collection
+	// Compte le nombre d'Ã©lements dans la collection
 	ujs.ArrayList.prototype.count = function ()
 	{
 		return _members.length;
@@ -38,7 +38,7 @@ var ujs = window.ujs || {};
 		this.length = 0;
 	};
 	
-	// Renvoie true si l'élement est contenu dans la collection
+	// Renvoie true si l'Ã©lement est contenu dans la collection
 	ujs.ArrayList.prototype.contains = function (element)
 	{
 		var i = 0, contains = false;
@@ -52,7 +52,7 @@ var ujs = window.ujs || {};
 		return contains;
 	};
 	
-	// Copie le contenu de la collection dans la tableau passé en paramètre
+	// Copie le contenu de la collection dans la tableau passÃ© en paramÃ¨tre
 	ujs.ArrayList.prototype.copyTo = function (array)
 	{
 		if (this.length > 0) {
@@ -61,7 +61,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Récupère l'élement à la position donnée
+	// RÃ©cupÃ¨re l'Ã©lement Ã  la position donnÃ©e
 	ujs.ArrayList.prototype.getAt = function (index)
 	{
 		if (index > this.length - 1 || index < 0) {
@@ -71,7 +71,7 @@ var ujs = window.ujs || {};
 		return _members[index];
 	};
 	
-	// Effectue une boucle et appel la fonction callback avec l'élement en cours
+	// Effectue une boucle et appel la fonction callback avec l'Ã©lement en cours
 	ujs.ArrayList.prototype.forEach = function (callback)
 	{
 		if (this.length > 0) {
@@ -81,7 +81,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Retourne l'index de l'élement si il est présent dans la collection
+	// Retourne l'index de l'Ã©lement si il est prÃ©sent dans la collection
 	ujs.ArrayList.prototype.indexOf = function (element)
 	{
 		var i = 0, index = -1;
@@ -96,7 +96,7 @@ var ujs = window.ujs || {};
 		return index;
 	};
 	
-	// Insert l'élément à la position donnée par index
+	// Insert l'Ã©lÃ©ment Ã  la position donnÃ©e par index
 	ujs.ArrayList.prototype.insertAt = function (index, element)
 	{
 		if (index > 0 && index < this.length) {
@@ -115,7 +115,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Supprime un élement de la liste
+	// Supprime un Ã©lement de la liste
 	ujs.ArrayList.prototype.remove = function (element)
 	{
 		var i = 0, done = false;
@@ -130,7 +130,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Supprime un élement de la liste à la position donnée
+	// Supprime un Ã©lement de la liste Ã  la position donnÃ©e
 	ujs.ArrayList.prototype.removeAt = function (index)
 	{
 		if (index > 0 && index < this.length) {
@@ -148,7 +148,7 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Retourne une chaine de caractère de la liste
+	// Retourne une chaine de caractÃ¨re de la liste
 	ujs.ArrayList.prototype.toString = function ()
 	{
 		var arrayString = "";
