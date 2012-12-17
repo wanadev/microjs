@@ -168,6 +168,11 @@ var ujs = window.ujs || {};
 
     document.getElementsByTagName("body")[0].appendChild(js);
   };
+  
+  // Indique si l'élèment search est présent dans le tableau passé en paramètre
+  ujs.inArray = function (search, array) {
+	return (array.indexOf(search) > -1);
+  };
 
   // Récupère un groupe d'élèment du dom par leur classe
   ujs.getByClass = function (className) {
