@@ -130,6 +130,26 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
+	// Obtient le premier élément de la collection
+	ujs.Dictionary.prototype.getFirstElement = function () 
+	{
+		if (this.length > 0) {
+			return this.values[0];
+		}
+		
+		return null;
+	};
+	
+	// Obtient le dernier élément de la collection
+	ujs.Dictionary.prototype.getLastElement = function ()
+	{
+		if (this.length > 0) {
+			return this.values[(this.length - 1)];
+		}
+		
+		return null;
+	};
+	
 	// Obtient toutes les clés de la collection
 	ujs.Dictionary.prototype.getKeys = function ()
 	{
