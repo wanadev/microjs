@@ -87,16 +87,14 @@ var ujs = window.ujs || {};
 	};
 	
 	// Supprime plusieurs objets de la collection
-	ujs.Dictionary.prototype.removeRange = function (keys, values)
+	ujs.Dictionary.prototype.removeRange = function (keys)
 	{
-		if (keys.length == values.length) {
-			var i = 0, l = keys.length;
+		var i = 0, l = keys.length;
 			
-			while (i < l) {
-				this.remove(keys[i], values[i]);
-				i++;
-			}	
-		}
+		while (i < l) {
+			this.remove(keys[i]);
+			i++;
+		}			
 	};
 	
 	// Obtient toutes les valeurs de la collections
