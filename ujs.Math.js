@@ -1,14 +1,30 @@
+/**
+ * @module ujs
+ * @submodule Math
+ */
+
 var ujs = window.ujs || {};
 ujs.Math = ujs.Math || {};
 
 (function () {
-
-  // Obtient un nombre aléatoire compris entre min et max
+  /**
+   * Gets a random integer between min and max.
+   *
+   * @method getRandomInt
+   * @param min Minimum value.
+   * @param max Maximum value.
+   * @return An integer between min and max.
+   */
   ujs.Math.getRandomInt = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  // Obtient une valeur comprise dans un interval
+  /**
+   * Gets a value between min and max.
+   *
+   * @method clamp
+   * @return Value between min and max.
+   */
   ujs.Math.clamp = function (value, min, max) {
 
     if (value < min) {
@@ -21,7 +37,15 @@ ujs.Math = ujs.Math || {};
     return value;
   };
 
-  // Obtient une interpolation linéaire entre 2 valeurs
+  /**
+   * Interpolates between value1 and value2 by amount.
+   *
+   * @method lerp
+   * @param {Number} value1 Start value.
+   * @param {Number} value2 End value.
+   * @param {Number} amount Value between 0 and 1 indicating the weight of value2. 
+   * @return {Number} Interpolated value.
+   */
   ujs.Math.lerp = function (value1, value2, amount) {
     amount = amount < 0 ? 0 : amount;
     amount = amount > 1 ? 1 : amount;

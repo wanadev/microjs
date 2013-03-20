@@ -2,14 +2,12 @@ var ujs = window.ujs || {};
 (function () {
 	var _members = [];
 	
-	ujs.ArrayList = function ()
-	{
+	ujs.ArrayList = function () {
 		this.length = 0;
 	};
 	
 	// Ajoute un élement ou un tableau d'élement à la collection
-	ujs.ArrayList.prototype.add = function (element)
-	{
+	ujs.ArrayList.prototype.add = function (element) {
 		var size = element.length;
 		
 		if (size > 0) {
@@ -26,26 +24,24 @@ var ujs = window.ujs || {};
 	};
 	
 	// Compte le nombre d'élements dans la collection
-	ujs.ArrayList.prototype.count = function ()
-	{
+	ujs.ArrayList.prototype.count = function () {
 		return _members.length;
 	};
 	
 	// Vide le contenu de la collection
-	ujs.ArrayList.prototype.clear = function ()
-	{
+	ujs.ArrayList.prototype.clear = function () {
 		_members = [];
 		this.length = 0;
 	};
 	
 	// Renvoie true si l'élement est contenu dans la collection
-	ujs.ArrayList.prototype.contains = function (element)
-	{
+	ujs.ArrayList.prototype.contains = function (element) {
 		var i = 0, contains = false;
 		
 		while (i < this.length && !contains) {
-			if (_members[i] == element)
+			if (_members[i] == element) {
 				contains = true;
+			}
 			i++;
 		}
 		
@@ -53,17 +49,17 @@ var ujs = window.ujs || {};
 	};
 	
 	// Copie le contenu de la collection dans la tableau passé en paramètre
-	ujs.ArrayList.prototype.copyTo = function (array)
-	{
+	ujs.ArrayList.prototype.copyTo = function (array, startIndex) {
 		if (this.length > 0) {
-			for (var i = 0; i < this.length; i++)
+			var startIndex = (startIndex || 0) && Math.min(startIndex, this.length);
+			for (var i = startIndex; i < this.length; i++) {
 				array.push(_members[i]);
+			}
 		}
 	};
 	
 	// Récupère l'élement à la position donnée
-	ujs.ArrayList.prototype.getAt = function (index)
-	{
+	ujs.ArrayList.prototype.getAt = function (index) {
 		if (index > this.length - 1 || index < 0) {
 			return null;
 		}
@@ -72,8 +68,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Effectue une boucle et appel la fonction callback avec l'élement en cours
-	ujs.ArrayList.prototype.forEach = function (callback)
-	{
+	ujs.ArrayList.prototype.forEach = function (callback) {
 		if (this.length > 0) {
 			for (var i = 0; i < this.length; i++) {
 				callback(_members[i]);
@@ -82,8 +77,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Retourne l'index de l'élement si il est présent dans la collection
-	ujs.ArrayList.prototype.indexOf = function (element)
-	{
+	ujs.ArrayList.prototype.indexOf = function (element) {
 		var i = 0, index = -1;
 		
 		while (i < this.length && index == -1) {
@@ -97,8 +91,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Insert l'élément à la position donnée par index
-	ujs.ArrayList.prototype.insertAt = function (index, element)
-	{
+	ujs.ArrayList.prototype.insertAt = function (index, element) {
 		if (index > 0 && index < this.length) {
 			var tempArray = [];
 				
@@ -116,8 +109,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Supprime un élement de la liste
-	ujs.ArrayList.prototype.remove = function (element)
-	{
+	ujs.ArrayList.prototype.remove = function (element)	{
 		var i = 0, done = false;
 		
 		while (i < this.length && !done) {
@@ -131,8 +123,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Supprime un élement de la liste à la position donnée
-	ujs.ArrayList.prototype.removeAt = function (index)
-	{
+	ujs.ArrayList.prototype.removeAt = function (index) {
 		if (index > 0 && index < this.length) {
 		
 			var tempArray = [];
@@ -149,8 +140,7 @@ var ujs = window.ujs || {};
 	};
 	
 	// Retourne une chaine de caractère de la liste
-	ujs.ArrayList.prototype.toString = function ()
-	{
+	ujs.ArrayList.prototype.toString = function () {
 		var arrayString = "";
 		
 		for (var i = 0; i < this.length; i++) {
