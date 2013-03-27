@@ -234,11 +234,12 @@ var ujs = window.ujs || {};
         var method = parameters.method || "GET";
         var params = parameters.params || "";
         var callback = parameters.success || null;
+	var async = typeof(parameters.async) != "undefined" ? parameters.async : true;
 
         var xhr = new XMLHttpRequest();
 
         if (method == "POST") {
-            xhr.open("POST", url, true);
+            xhr.open("POST", url, async);
 
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             xhr.setRequestHeader("Content-length", params.length);
@@ -255,7 +256,7 @@ var ujs = window.ujs || {};
         }
         else {
             var finalUrl = params != "" ? url + "?" + params : url;
-            xhr.open("GET", finalUrl, true);
+            xhr.open("GET", finalUrl, async);
 
             xhr.onreadystatechange = function() { 
             if (xhr.readyState == 4) {
