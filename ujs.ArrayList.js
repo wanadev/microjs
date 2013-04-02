@@ -1,13 +1,33 @@
+/**
+ * MicroJS aka ujs class library
+ * Define an ArrayList collection.
+ *
+ * @module ujs
+ */
+
 var ujs = window.ujs || {};
-(function () {
+
+ujs.ArrayList = (function () {
 	var _members = [];
 	
-	ujs.ArrayList = function () {
+	/** 
+	 * An array list
+	 * 
+	 * @constructor
+	 * @class ArrayList
+	 *
+	 */
+	var arrayList = function () {
 		this.length = 0;
 	};
 	
-	// Ajoute un élement ou un tableau d'élement à la collection
-	ujs.ArrayList.prototype.add = function (element) {
+	/**
+	 * Add an element to the list.
+	 *
+	 * @method add
+	 * @param {Object} element The element to add.
+	 */
+	arrayList.prototype.add = function (element) {
 		var size = element.length;
 		
 		if (size > 0) {
@@ -23,19 +43,34 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Compte le nombre d'élements dans la collection
-	ujs.ArrayList.prototype.count = function () {
+	/**
+	 * Gets the number of elements. Note that no calcul are made, you can use it in a loop safetly.
+	 * 
+	 * @method coun
+	 * @return {Number} The number of elements.
+	 */
+	arrayList.prototype.count = function () {
 		return _members.length;
 	};
 	
-	// Vide le contenu de la collection
-	ujs.ArrayList.prototype.clear = function () {
-		_members = [];
+	/**
+	 * Clear the collection.
+	 * 
+	 * @method clear
+	 */
+	arrayList.prototype.clear = function () {
+		_members.length = 0;
 		this.length = 0;
 	};
 	
-	// Renvoie true si l'élement est contenu dans la collection
-	ujs.ArrayList.prototype.contains = function (element) {
+	/**
+	 * Determine if an element is in the collection.
+	 * 
+	 * @method contains
+	 * @param {Object} element The element to search.
+	 * @return {Boolean} Return true if exists, otherwise return false.
+	 */
+	arrayList.prototype.contains = function (element) {
 		var i = 0, contains = false;
 		
 		while (i < this.length && !contains) {
@@ -48,8 +83,13 @@ var ujs = window.ujs || {};
 		return contains;
 	};
 	
-	// Copie le contenu de la collection dans la tableau passé en paramètre
-	ujs.ArrayList.prototype.copyTo = function (array, startIndex) {
+	/**
+	 * Copy an array in the collection.
+	 * 
+	 * @param {Array} array An array to copy.
+	 * @param {Number} startIndex The start index to use with the array.
+	 */
+	arrayList.prototype.copyTo = function (array, startIndex) {
 		if (this.length > 0) {
 			var startIndex = (startIndex || 0) && Math.min(startIndex, this.length);
 			for (var i = startIndex; i < this.length; i++) {
@@ -58,8 +98,14 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Récupère l'élement à la position donnée
-	ujs.ArrayList.prototype.getAt = function (index) {
+	/**
+	 * Gets an element at the specified position.
+	 *
+	 * @method getAt
+	 * @param {Number} index The index of the element.
+	 * @return {Object} Return the object if exists, otherwise return null.
+	 */
+	arrayList.prototype.getAt = function (index) {
 		if (index > this.length - 1 || index < 0) {
 			return null;
 		}
@@ -67,17 +113,29 @@ var ujs = window.ujs || {};
 		return _members[index];
 	};
 	
-	// Effectue une boucle et appel la fonction callback avec l'élement en cours
-	ujs.ArrayList.prototype.forEach = function (callback) {
+	/**
+	 * Execute a foreach loop on the collection and call a function with two parameters.
+	 *
+	 * @method forEach
+	 * @param {Function} callback The callback to use, it must be have two parameters, index and element.
+	 *
+	 */
+	arrayList.prototype.forEach = function (callback) {
 		if (this.length > 0) {
 			for (var i = 0; i < this.length; i++) {
-				callback(_members[i]);
+				callback(i, _members[i]);
 			}
 		}
 	};
 	
-	// Retourne l'index de l'élement si il est présent dans la collection
-	ujs.ArrayList.prototype.indexOf = function (element) {
+	/**
+	 * Gets the index of the element passed in parameter.
+	 *
+	 * @method indexOd
+	 * @param {Object} element The element to use to find index.
+	 * @return {Number} Return the index of the element, otherwise return -1.
+	 */
+	arrayList.prototype.indexOf = function (element) {
 		var i = 0, index = -1;
 		
 		while (i < this.length && index == -1) {
@@ -90,8 +148,14 @@ var ujs = window.ujs || {};
 		return index;
 	};
 	
-	// Insert l'élément à la position donnée par index
-	ujs.ArrayList.prototype.insertAt = function (index, element) {
+	/**
+	 * Insert an element at the specified index. If the index already exists the array is resized and elements are pushed to right.
+	 *
+	 * @method insertAt
+	 * @param {Number} index Desired index.
+	 * @param {Object} element The element to add who can be an object or a string.
+	 */
+	arrayList.prototype.insertAt = function (index, element) {
 		if (index > 0 && index < this.length) {
 			var tempArray = [];
 				
@@ -108,8 +172,13 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Supprime un élement de la liste
-	ujs.ArrayList.prototype.remove = function (element)	{
+	/** 
+	 * Remove an element.
+	 *
+	 * @method removeAt
+	 * @param {Object} element The element to remove
+	 */
+	arrayList.prototype.remove = function (element)	{
 		var i = 0, done = false;
 		
 		while (i < this.length && !done) {
@@ -122,8 +191,16 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Supprime un élement de la liste à la position donnée
-	ujs.ArrayList.prototype.removeAt = function (index) {
+	/** 
+	 * Remove an element at the specified position.
+	 *
+	 * @method removeAt
+	 * @param {Number} index The index of the element.
+	 * @return {Object} Return the removed object if exists, otherwise return null.
+	 */
+	arrayList.prototype.removeAt = function (index) {
+		var value = null;
+
 		if (index > 0 && index < this.length) {
 		
 			var tempArray = [];
@@ -132,15 +209,25 @@ var ujs = window.ujs || {};
 				if (i != index && i < this.length) {
 					tempArray.push(_members[i]);
 				}
+				else {
+					value = _members[i];
+				}
 			}
 			
 			_members = tempArray;
 			this.length = _members.length;
 		}
+
+		return value;
 	};
 	
-	// Retourne une chaine de caractère de la liste
-	ujs.ArrayList.prototype.toString = function () {
+	/**
+	 * Gets a string of all value stored in the collection.
+	 *
+	 * @method toString
+	 * @return {String} A string of all value stored in the collection.
+	 */
+	arrayList.prototype.toString = function () {
 		var arrayString = "";
 		
 		for (var i = 0; i < this.length; i++) {
@@ -149,4 +236,6 @@ var ujs = window.ujs || {};
 			
 		return arrayString;
 	};
+
+        return arrayList;
 })();

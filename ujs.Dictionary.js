@@ -1,7 +1,20 @@
+﻿/**
+ * MicroJS aka ujs class library
+ * Define an hybrid dictionary collection.
+ *
+ * @module ujs
+ */
+
 var ujs = window.ujs || {};
 
-(function () {
-	ujs.Dictionary = function()	{
+ujs.Dictionary = (function () {
+	/**
+	 * Create an hybrid dictionary where you can access elements with there keys or indexs.
+	 *
+	 * @constructor
+	 * @class Dictionary
+	 */
+	var dictionary = function()	{
 		this.keys = [];
 		this.values = [];
 		this.length = 0;
@@ -13,8 +26,15 @@ var ujs = window.ujs || {};
 		context.length += 1;
 	};
 	
-	// Ajoute un nouvel élement à la collection
-	ujs.Dictionary.prototype.add = function (key, value, merge)	{
+	/**
+	 * Add an object to the collection
+	 *
+	 * @method add
+	 * @param {Object} key The key used for identificating the value, it can be a string or an object.
+	 * @param {Object} value The value you want store.
+	 * @param {Boolean} merge Sets to true to merge values if an object with the same key is already in collection.
+	 */
+	dictionary.prototype.add = function (key, value, merge)	{
 		var merge = (typeof(merge) != "undefined") ? merge : false;
 		var element = this.getElement(key);
 		
@@ -35,8 +55,15 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Ajoute un groupe d'élement à la collection
-	ujs.Dictionary.prototype.addRange = function (keys, values)	{
+	/** 
+	 * Add values to the collection. Keys and Values arrays must have the same size.
+	 *
+	 * @method addRange
+	 * @param {Object} key An array of keys used for identificating the values, it can be a string or an object.
+	 * @param {Object} values An array of values you want store.
+	 * @param {Boolean} merge Sets to true to merge values if an object with the same key is already in collection.
+	 */
+	dictionary.prototype.addRange = function (keys, values, merge)	{
 		if (keys.length == values.length) {
 			var i = 0, l = keys.length;
 			
@@ -47,25 +74,47 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Vide la collection
-	ujs.Dictionary.prototype.clear = function () {
-		this.values = [];
-		this.keys = [];
+	/**
+	 * Clear the collection.
+	 *
+	 * @method clear
+	 */
+	dictionary.prototype.clear = function () {
+		this.values.length = 0;
+		this.keys.length = 0;
 		this.length = 0;
 	};
 	
-	// Indique si la clé existe dans la collection
-	ujs.Dictionary.prototype.containsKey = function (key) {
+	/**
+	 * Determine if the key exists in the collection.
+	 *
+	 * @method containsKey
+	 * @param {Object} key The key used for identificating the value, it can be a string or an object.
+	 * @return {Boolean} Return true if the key exists, otherwise return false.
+	 */
+	dictionary.prototype.containsKey = function (key) {
 		return this.keys.indexOf(key) > -1;
 	};
 	
-	// Indique si la valeur existe dans la collection
-	ujs.Dictionary.prototype.containsValue = function (value) {
+	/**
+	 * Determine if the value exists in the collection.
+	 *
+	 * @method containsValue
+	 * @param {Object} value The value you search.
+	 * @return {Boolean} Return true if the value exists, otherwise return false.
+	 */
+	dictionary.prototype.containsValue = function (value) {
 		return this.values.indexOf(value) > -1;
 	};
 	
-	// Supprime un objet de la collection
-	ujs.Dictionary.prototype.remove = function (key) {
+	/**
+	 * Remove an object from the collection with it key.
+	 *
+	 * @method remove
+	 * @param {Object} key The key used for identificating the value, it can be a string or an object.
+	 * @param {Object} removedValue The value removed from the collection if it exists, otherwise return null.
+	 */
+	dictionary.prototype.remove = function (key) {
 		var removedValue = null;
 		var index = this.keys.indexOf(key);
 		
@@ -78,8 +127,13 @@ var ujs = window.ujs || {};
 		return removedValue;
 	};
 	
-	// Supprime plusieurs objets de la collection
-	ujs.Dictionary.prototype.removeRange = function (keys) {
+	/**
+	 * Remove objects from the collection with there keys.
+	 *
+	 * @method remove
+	 * @param {Object} key An array of keys used for identificating the values, it can be a string or an object.
+	 */
+	dictionary.prototype.removeRange = function (keys) {
 		var i = 0, l = keys.length;
 			
 		while (i < l) {
@@ -88,19 +142,36 @@ var ujs = window.ujs || {};
 		}			
 	};
 	
-	// Obtient toutes les valeurs de la collections
-	ujs.Dictionary.prototype.getElements = function () {
+	/**
+	 * Gets all values.
+	 *
+	 * @method getElements
+	 * @return {Array} An array of all values.
+	 */
+	dictionary.prototype.getElements = function () {
 		return this.values;
 	}
 	
-	// Obtient l'élément identifié par la clé passée en paramètre
-	ujs.Dictionary.prototype.getElement = function(key) {
+	/**
+	 * Gets an element with its key.
+	 *
+	 * @method getElement
+	 * @param {Object} key The key used for identificating the value, it can be a string or an object.
+	 * @return {Object} The value if exists, otherwise return null;
+	 */
+	dictionary.prototype.getElement = function(key) {
 		var index = this.keys.indexOf(key);
 		return (index > -1) ? this.values[index] : null;
 	};
 	
-	// Obtient l'élément à la position passée en paramètre
-	ujs.Dictionary.prototype.getElementAt = function (index) {
+	/**
+	 * Gets a value at the specified index.
+	 *
+	 * @getElementAt
+	 * @param {Number} index The index of the value in the collection.
+	 * @return {Object} The value if exists, otherwise return null;
+	 */
+	dictionary.prototype.getElementAt = function (index) {
 		var result = null;
 		
 		if (index > -1 && index < this.length) {
@@ -110,24 +181,44 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Obtient le premier élément de la collection
-	ujs.Dictionary.prototype.getFirstElement = function () {
+	/**
+	 * Gets the first value of the collection.
+	 *
+	 * @method getFirstElement
+	 * @return {Object} The first value if extists, otherwise return null.
+	 */
+	dictionary.prototype.getFirstElement = function () {
 		return (this.length > 0) ? this.values[0] : null;
 	};
 	
-	// Obtient le dernier élément de la collection
-	ujs.Dictionary.prototype.getLastElement = function () {
+	/**
+	 * Gets the latest value of the collection.
+	 *
+	 * @method getLastElement
+	 * @return {Object} The first value if extists, otherwise return null.
+	 */
+	dictionary.prototype.getLastElement = function () {
 		return (this.length > 0) ? this.values[(this.length - 1)] : null;
 	};
 	
-	// Obtient toutes les clés de la collection
-	ujs.Dictionary.prototype.getKeys = function () {
+	/**
+	 * Gets all keys.
+	 *
+	 * @method getKeys
+	 * @return {Array} An array of keys
+	 */
+	dictionary.prototype.getKeys = function () {
 		return this.keys;
 	};
 	
-	// Obtient la clé de l'élément passé en paramètre
-	ujs.Dictionary.prototype.getKey = function (element)
-	{
+	/**
+	 * Gets the key for the value passed in parameter.
+	 *
+	 * @method getKey
+	 * @param {Object} The value of the searched key.
+	 * @return {Object} The key if exists, otherwise return null.
+	 */
+	dictionary.prototype.getKey = function (element) {
 		var result = null;
 		var index = this.values.indexOf(element);
 		
@@ -138,8 +229,14 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Obtient la clé à la position passée en paramètre
-	ujs.Dictionary.prototype.getKeyAt = function (index) {
+	/**
+	 * Gets the key of a value at a specified position.
+	 *
+	 * @method getKeyAt
+	 * @param {Number} index The index to search.
+	 * @param {Object} The value at this index.
+	 */
+	dictionary.prototype.getKeyAt = function (index) {
 		var result = null;
 		
 		if (index > -1 && index < this.length) {
@@ -149,9 +246,13 @@ var ujs = window.ujs || {};
 		return result;
 	};
 	
-	// Exécute une fonction sur tous les éléments de la collection
-	// Le callback à la signature suivante : function (key, value)
-	ujs.Dictionary.prototype.forEach = function (callback) {
+	/**
+	 * Execute a foreach loop on each elements.
+	 *
+	 * @method forEach
+	 * @param {Function} callback A callback function with two parameters (key, element).
+	 */ 
+	dictionary.prototype.forEach = function (callback) {
 		var i = 0;
 		var element = null;
 	
@@ -162,8 +263,13 @@ var ujs = window.ujs || {};
 		}
 	};
 	
-	// Clone l'objet en cours et renvoie une nouvelle instance
-	ujs.Dictionary.prototype.clone = function () {
+	/**
+	 * Clone this dictionnary and return it.
+	 *
+	 * @method clone
+	 * @return {ujs.Dictionary} A cloned dictionary of this instance.
+	 */
+	dictionary.prototype.clone = function () {
 		var dictionary = new ujs.Dictionary();
 		
 		for (var i = 0; i < this.length; i++) {
@@ -174,18 +280,30 @@ var ujs = window.ujs || {};
 		
 		return dictionary;
 	};
-	
-	// Fusionne 2 dictionnaires
-	// Les propriétés de l'objet en cours sont surchargées
-	// Les propriétés de l'objet fusionné seront disponibles dans l'objet en cours
-	ujs.Dictionary.prototype.merge = function (dico) {
+
+	/**
+	 * Merge this dictionary with another dictionary.
+	 * Properties of the current object are overrided.
+	 * Properties of the other dictionary will be available in the current dictionary.
+	 *
+	 * @method merge
+	 * @param {ujs.Dictionary} Another dictionary for merging
+	 */
+	dictionary.prototype.merge = function (dico) {
 		var that = this;
 		dico.forEach(function (key, value) {
 			that.add(key, value, true);
 		});
 	};
 	
-	ujs.Dictionary.prototype.mergeArray = function (array, merge) {
+	/**
+	 * Add an array in the collection and use number for keys.
+	 * @method mergeArray
+	 * @param {Array} array An array of values.
+	 * @param {Boolean} merge Sets to true for merge the object.
+	 * @return {Boolean} Return true if added, otherwise return false.
+	 */
+	dictionary.prototype.mergeArray = function (array, merge) {
 		var merge = (typeof (merge) == "boolean") ? merge : false;
 		
 		if (array instanceof Array) {
@@ -197,7 +315,14 @@ var ujs = window.ujs || {};
 		return false;
 	};
 	
-	ujs.Dictionary.prototype.mergeObject = function (object, merge) {
+	/**
+	 * Add an object in the collection and use number for keys.
+	 * @method mergeObject
+	 * @param {Array} object An abject with properties.
+	 * @param {Boolean} merge Sets to true for merge the object.
+	 * @return {Boolean} Return true if added, otherwise return false.
+	 */
+	dictionary.prototype.mergeObject = function (object, merge) {
 		var merge = (typeof (merge) == "boolean") ? merge : false;
 
 		if (typeof (object) == "object") {
@@ -211,4 +336,6 @@ var ujs = window.ujs || {};
 		
 		return false;
 	};
+
+	return dictionary;
 })();
