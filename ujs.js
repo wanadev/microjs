@@ -262,18 +262,20 @@ var ujs = (function () {
      */
     this.hasClass = function (element, className) {
         var classes = element.getAttribute("class");
-        var classArray = classes.split(" ");
         var hasClass = false;
-        var i = 0;
-        var arraySize = classArray.length;
 
-        while (i < arraySize && !hasClass) {
-            if (classArray[i] == className) {
-                hasClass = true;
+        if (classes != null) {
+            var classArray = classes.split(" ");
+            var i = 0;
+            var arraySize = classArray.length;
+
+            while (i < arraySize && !hasClass) {
+                if (classArray[i] == className) {
+                    hasClass = true;
+                }
+                i++;
             }
-            i++;
         }
-
         return hasClass;
     };
 
@@ -415,6 +417,31 @@ var ujs = (function () {
      */
     this.inArray = function (search, array) {
         return (array.indexOf(search) > -1);
+    };
+
+    /**
+     * Inserts an object in a sorted array
+     *
+     * @method insertSorted
+     * @param {Object} An object (can be a string, number, object)
+     * @param {Function} The sorting function, same arguments and return values as in array.sort 
+     * @param {Array} An array of element
+     * @return {Array} array in input
+     */
+    this.insertSorted = function(element, sortfunction, array) {
+        var current = 0;
+        if (array.length == 0) {
+            array.push(element);
+        }
+        else { 
+            while (current < array.length && sortfunction(element, array[current]) > 0) {
+                current++;
+            }
+
+            array.splice(current,0,element);
+        }
+
+        return array;
     };
 
     /**
