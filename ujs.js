@@ -422,17 +422,17 @@ var ujs = (function () {
     /**
      * Clone an array.
      *
-     * @method arrayClone
+     * @method cloneArray
      * @param {Array} array The array to clone
      * @return {Array} The new array
      */
-    this.arrayClone(array) {
+    this.cloneArray = function(array) {
         var newArray = [];
-        for (i=0 ; i<array.length ; i++) {
+        for (var i = 0, l = array.length ; i < l ; i++) {
             newArray[i] = array[i];
         }
         return newArray;
-    }
+    };
 
     /**
      * Inserts an object in a sorted array
