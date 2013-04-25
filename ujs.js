@@ -31,10 +31,12 @@ var ujs = (function () {
      * If the specified event isn't already created and cached, it's created and cached.
      *
      * @method notify
-     * @param {String} The event name or an array of event names
+     * @param {String} The event name or an array of event names.
+	 * @param {Boolean} Sets to true for using a non cached event.
      * @return {Object} An object with paramaters (optional) or an array of objects used with event names.
      */
-    this.notify = function (name, params) {
+    this.notify = function (name, params, createNewEvent) {
+		var createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false;
         if ((name instanceof Array) && (params instanceof Array)) {
             for (var i = 0, l = name.length; i < l; i++) {
                 this.notify(name[i], (typeof(params[i]) != "undefined") ? params[i] : {});
@@ -44,6 +46,11 @@ var ujs = (function () {
             if (typeof(events[name]) != "undefined") {
                 var event = events[name];
 
+				if (createNewEvent) {
+					event = document.createEvent("HTMLEvents");
+					event.initEvent(name, true, false);
+				}
+				
                 if (params instanceof Object) {
                     for(var i in params) {
                         event[i] = params[i];
@@ -428,7 +435,7 @@ var ujs = (function () {
      */
     this.cloneArray = function(array) {
         var newArray = [];
-        for (var i = 0, l = array.length ; i < l ; i++) {
+        for (var i = 0, l = array.length; i < l; i++) {
             newArray[i] = array[i];
         }
         return newArray;
