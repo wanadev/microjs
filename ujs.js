@@ -36,10 +36,11 @@ var ujs = (function () {
      * @return {Object} An object with paramaters (optional) or an array of objects used with event names.
      */
     this.notify = function (name, params, createNewEvent) {
-		var createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false;
-        if ((name instanceof Array) && (params instanceof Array)) {
-            for (var i = 0, l = name.length; i < l; i++) {
-                this.notify(name[i], (typeof(params[i]) != "undefined") ? params[i] : {});
+		var createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false; 
+        if (name instanceof Array) { 
+            var params = (params instanceof Array) ? params : [];
+            for (var i = 0, l = name.length; i < l; i++) { 
+                this.notify(name[i], (typeof(params[i]) !== "undefined") ? params[i] : {});
             }
         }
         else { 
