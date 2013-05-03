@@ -340,7 +340,15 @@ var ujs = (function () {
         var params = parameters.params || "";
         var callback = parameters.success || null;
 	    var async = (typeof(parameters.async) != "undefined") ? parameters.async : true;
-        var xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        var xhr;
+        
+        // For browser
+        if (typeof(window) !== "undefined") {
+            xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        else { // For node or Worker
+            xhr = new XMLHttpRequest();
+        }
 
         if (method == "POST") {
             xhr.open("POST", url, async);
