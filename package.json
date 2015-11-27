@@ -1,18 +1,22 @@
 {
-	"name" : "ujs",
-	"description" : "A micro Framework for javascript",
-	"version" : "0.3",
-	"lastModified" : "Dec 06, 2012",
-	"author" : "Wanadev <http://www.wanadev.fr>",
-	"homepage" : "https://github.com/wanadev/microjs",
-	"license" : "MIT",
-	"main" : "./ujs.js",
-	"keywords" : ["Micro Framework", "DOM editing", "Simple event"],
-	"repository" : {
-		"type" : "git",
-		"url" : "https://github.com/wanadev/microjs.git"
-	},
-	"engines" : {
-		"node" : "*"
-	}
+  "name": "wanadev-ujs",
+  "version": "1.0.0",
+  "description": "A collection of javascript helpers",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wanadev/microjs.git"
+  },
+  "keywords": [
+    "helper"
+  ],
+  "author": "Wanadev",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wanadev/microjs/issues"
+  },
+  "homepage": "https://github.com/wanadev/microjs#readme"
 }
