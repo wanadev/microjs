@@ -135,7 +135,7 @@ var ujs = {
      * @param {DOMElement} The DOM element.
      * @param {String} The value to set in the attribute.
      */
-    removeOnAttribute = function(attribute, element, value) {
+    removeOnAttribute: function(attribute, element, value) {
         if (typeof(element) != "object") {
             return;
         }
