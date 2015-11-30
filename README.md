@@ -1,132 +1,110 @@
-Microjs 
-=======
-
-### 1. Qu'est ce que Microjs ?
-
-Microjs (ujs) est une petite bibliothèque JavaScript qui se veut légère. 
-Le but d'ujs est de proposer des fonctionnalités minimales mais nécessaires, lors du développement d'une application web en JavaScript.
-
-Vous trouverez aussi quelques extensions pour la bibliothèque afin d'étendre ses fonctionnalités.
-
-### 2. Fonctionnalités
-
-* Déclanchement manuel d'un évènement sur un élément du dom ;
-* Ajout/Suppression d'un attribut ;
-* Ajout/Suppression d'une classe ;
-* Ajout/Suppression d'un style ;
-* Ajax Get et Post (non compatible IE8 et inférieur) ;
-* Quelques alias ;
-* Objet ArrayList (extension) ;
-* Objet Dictionary (extension).
-
-### 3. Exemples
-
-#### Ajax
-
+# Microjs
+ 
+## What is microjs?
+ 
+Microjs (ujs) is a lightweight utility library written in JavaScript. The aim is to provide minimal but useful utility features.
+There are also a few extensions to extend existing features.
+ 
+## Features
+ 
+* Trigger an event on a `DOMElement`
+* Add/Remove attributes
+* Add/Remove styles
+* Ajax method for `GET` and `POST` (IE9+)
+* Some aliases
+* [Extension] ArrayList
+* [Extension] Dictionary
+ 
+## Examples
+ 
+### Ajax
+ 
 ```javascript
 ujs.ajax({
   method: "POST",
-  url: "traitement.php",
+  url: "process.php",
   params: "action=1&user_id=45",
   success: function (response) {
-    console.log(response); // retour serveur
+    console.log(response);
   }
 });
 ```
-
-#### Déclanchement d'évènements
-
+ 
+### Trigger events
+ 
 ```html
-<div id="btnValidate" class="button red">Valider</div>
+<div id="btnValidate" class="button red">OK</div>
 ```
-
+ 
 ```javascript
-// Récupération du bouton
+// Gets the button
 var button = ujs.getById("btnValidate");
-
-// Déclancher l'évenement click
+ 
+// Trigger a click event
 ujs.triggerEvent(button, "click");
 ```
-
-#### Ajouter / Supprimer une classe
-
-```html
-<div id="btnValidate" class="button red">Valider</div>
-```
-
+ 
+### [Extension] The `ArrayList` class
+ 
 ```javascript
-// Récupération du bouton
-var button = ujs.getById("btnValidate");
-
-// Ajoute la classe selected si elle n'est pas déjà présente
-ujs.addClass(button, "selected");
-
-// Supprime la classe selected si elle est présente
-ujs.removeClass(button, "selected");
-```
-
-#### Utilisation de la classe ArrayList
-
-```javascript
-// nouvelle instance de ArrayList
+// Creates a list
 var list = new ujs.ArrayList(); 
-
-// Ajoute un tableau à la collection
+ 
+// Adds an array
 list.add([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
-
-// Ajoute un seul élément à la fin de la collection
+ 
+// Adds an element
 list.add(45);
-
-// Supprime l'élément à la position 4
+ 
+// Removes the element at the fourth position
 list.removeAt(4);
-
-// Insère l'élément 42 à la position 4
+ 
+// Inserts the element 42 at the fourth position
 list.insertAt(4, 42);
-
-// Boucle sur tous les éléments de la collection
+ 
+// Starts a loop on all elements.
 list.forEach(function (el) { elements.push(el); });
 ```
-
-#### Utilisation de la classe Dictionary
-
+ 
+### [Extension] The `Dictionary` class
+ 
 ```javascript
-// Nouvelle instance de Dictionary
+// Creates the dictionary
 var dictionary = new ujs.Dictionary();
-
-// Ajoute un élément
+ 
+// Adds an element.
 dictionary.add("chat", { name: "Boby", age: 1 });
-
-// Création de 2 collections clé/valeur pour être ajoutées en une seule fois dans le dictionnaire
+ 
+// Creates an array of keys and values.
 var keys = ["animaux", "humains", "reptiles"];
 var values =  [{ name: "animal", age: 25 }, { name: "humain", age: 48 }, { name: "reptile", age: 18 }];
-
-// On ajoute plusieurs objets en une seule fois
+ 
+// Adds them.
 dictionary.addRange(keys, values);
-
-// Supression
+ 
+// Removes an element.
 dictionary.remove("humains");
-
-// Création d'une nouvelle collection avec les valeurs d'une autre
+ 
+// Clones the collection.
 var dico2 = dictionary.clone();
-
-// Modification de l'élément "chat"
-dico2.getElement("chat").foo = "bar";
-dico2.getElement("chat").age = 42;
-dico2.getElement("chat").name = "Miaou";
-dico2.getElement("chat").bar = "foo";
-
-// Fusion de deux dictionnaires
+ 
+// Edits the element with the key cat
+dico2.getElement("cat").foo = "bar";
+dico2.getElement("cat").age = 42;
+dico2.getElement("cat").name = "Miaou";
+dico2.getElement("cat").bar = "foo";
+ 
+// Merges a collection into another.
 dico2.merge(dictionary);
 ```
-
-### 4. Construire la bibliothèque
-
-Pour construire les différents fichiers de la bibliothèque ainsi que la documentation, tapez la commande suivante :
-
+ 
+## Build the library
+ 
+Type the following commands to build the library and the documentation:
+ 
     npm install
     npm run build
-
-
-### 5. Licence
-
-Licence MIT, voir le fichier LICENSE pour plus d'information
+ 
+## Licence
+ 
+MIT Licence, please read the `LICENSE` file for more information.
