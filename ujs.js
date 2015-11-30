@@ -4,8 +4,9 @@
  * @class ujs
  */
 
-var ujs = (function () {
-    var events = [];
+var events = [];
+
+var ujs = {
 
     /**
      * Trigger an event on a DOM element.
@@ -14,17 +15,15 @@ var ujs = (function () {
      * @param {DOMElement} A DOM element.
      * @return {Object} The event name or an array of event names.
      */
-    this.triggerEvent = function (element, eventName) {
+    triggerEvent: function(element, eventName) {
         if (eventName instanceof Array) {
             for (var i = 0, l = eventName.length; i < l; i++) {
-                this.triggerEvent(element, eventName[i]);
+                ujs.triggerEvent(element, eventName[i]);
             }
-        }
-
-        else if ((element[eventName] || false) && typeof element[eventName] == 'function') {
+        } else if ((element[eventName] || false) && typeof element[eventName] == 'function') {
             element[eventName](element);
         }
-    };
+    },
 
     /**
      * Trigger an event and notify all subscribers that this event has been triggered.
@@ -32,41 +31,39 @@ var ujs = (function () {
      *
      * @method notify
      * @param {String} The event name or an array of event names.
-	 * @param {Boolean} Sets to true for using a non cached event.
+     * @param {Boolean} Sets to true for using a non cached event.
      * @return {Object} An object with paramaters (optional) or an array of objects used with event names.
      */
-    this.notify = function (name, params, createNewEvent) {
-		var createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false; 
-        if (name instanceof Array) { 
-            var params = (params instanceof Array) ? params : [];
-            for (var i = 0, l = name.length; i < l; i++) { 
-                this.notify(name[i], (typeof(params[i]) !== "undefined") ? params[i] : {});
+    notify: function(name, params, createNewEvent) {
+        createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false;
+        if (name instanceof Array) {
+            params = (params instanceof Array) ? params : [];
+            for (var i = 0, l = name.length; i < l; i++) {
+                ujs.notify(name[i], (typeof(params[i]) !== "undefined") ? params[i] : {});
             }
-        }
-        else { 
+        } else {
             if (typeof(events[name]) != "undefined") {
                 var event = events[name];
 
-				if (createNewEvent) {
-					event = document.createEvent("HTMLEvents");
-					event.initEvent(name, true, false);
-				}
-				
+                if (createNewEvent) {
+                    event = document.createEvent("HTMLEvents");
+                    event.initEvent(name, true, false);
+                }
+
                 if (params instanceof Object) {
-                    for(var i in params) {
+                    for (var i in params) {
                         event[i] = params[i];
                     }
                 }
 
                 document.dispatchEvent(event);
-            }
-            else {
+            } else {
                 events[name] = document.createEvent("HTMLEvents");
                 events[name].initEvent(name, true, false);
-                return this.notify(name, params);
+                return ujs.notify(name, params);
             }
         }
-    };
+    },
 
     /**
      * Gets a get parameter from the browser url.
@@ -75,11 +72,13 @@ var ujs = (function () {
      * @param {String} Params name.
      * @return {String} Get value.
      */
-    this.getURLParameter = function (name) {
+    getURLParameter: function(name) {
         var temp = document.location.href.split("?");
         var getString = temp[1];
         var getParameters = getString.split("&");
-        var i = 0, size = getParameters.length, value = null;
+        var i = 0,
+            size = getParameters.length,
+            value = null;
 
         while (i < size && value == null) {
             var tmp = getParameters[i].split("=");
@@ -91,8 +90,8 @@ var ujs = (function () {
         }
 
         return value;
-    };
-  
+    },
+
     /**
      * Add a value to an attribute on a DOM element.
      *
@@ -101,10 +100,10 @@ var ujs = (function () {
      * @param {DOMElement} The DOM element.
      * @param {String} The value to set in the attribute.
      */
-    this.addOnAttribute = function (attribute, element, value) {
+    addOnAttribute: function(attribute, element, value) {
         var separator = attribute == "style" ? ";" : " ";
         var content = element.getAttribute(attribute);
-        var alreadyHere = false;  
+        var alreadyHere = false;
         var contentArray = [];
 
         if (content != null && content != "") {
@@ -126,7 +125,7 @@ var ujs = (function () {
         }
 
         element.setAttribute(attribute, contentArray.join(" "));
-    };
+    },
 
     /**
      * Remove a value from an attribute on a DOM element
@@ -136,7 +135,7 @@ var ujs = (function () {
      * @param {DOMElement} The DOM element.
      * @param {String} The value to set in the attribute.
      */
-    this.removeOnAttribute = function (attribute, element, value) {
+    removeOnAttribute: function(attribute, element, value) {
         if (typeof(element) != "object") {
             return;
         }
@@ -157,8 +156,8 @@ var ujs = (function () {
 
             element.setAttribute(attribute, finalContent.join(separator));
         }
-    };
-  
+    },
+
     /**
      * Add a class on a DOM element. If it exists it is not re-added.
      *
@@ -166,16 +165,15 @@ var ujs = (function () {
      * @param {DOMElement} The DOM element.
      * @param {String} The class name or an Array of class names.
      */
-    this.addClass = function (element, className) {
+    addClass: function(element, className) {
         if (className instanceof Array) {
             for (var i = 0, l = className.length; i < l; i++) {
-                this.addOnAttribute("class", element, className[i]);
+                ujs.addOnAttribute("class", element, className[i]);
             }
+        } else {
+            ujs.addOnAttribute("class", element, className);
         }
-        else {
-            this.addOnAttribute("class", element, className);
-        }
-    };
+    },
 
     /**
      * Remove a class from a DOM element.
@@ -184,16 +182,15 @@ var ujs = (function () {
      * @param {DOMElement} The DOM element.
      * @param {String} The class name or an Array of class names.
      */
-    this.removeClass = function (element, className) {
+    removeClass: function(element, className) {
         if (className instanceof Array) {
             for (var i = 0, l = className.length; i < l; i++) {
-                this.removeOnAttribute("class", element, className[i]);
+                ujs.removeOnAttribute("class", element, className[i]);
             }
+        } else {
+            ujs.removeOnAttribute("class", element, className);
         }
-        else {
-            this.removeOnAttribute("class", element, className);
-        }
-    };
+    },
 
     /**
      * Replace a class by another class on a DOM element.
@@ -203,18 +200,17 @@ var ujs = (function () {
      * @param {String} classToRemove The class to remove.
      * @param {String} classToAdd The class to add.
      */
-    this.replaceClass = function (element, classToRemove, classToAdd) {
+    replaceClass: function(element, classToRemove, classToAdd) {
         if (element instanceof Array) {
             for (var i = 0, l = element.length; i < l; i++) {
-                this.removeClass(element[i], classToRemove);
-                this.addClass(element[i], classToAdd);
+                ujs.removeClass(element[i], classToRemove);
+                ujs.addClass(element[i], classToAdd);
             }
+        } else {
+            ujs.removeClass(element, classToRemove);
+            ujs.addClass(element, classToAdd);
         }
-        else {
-            this.removeClass(element, classToRemove);
-            this.addClass(element, classToAdd);
-        }
-    };
+    },
 
     /**
      * Remove all classes from a DOM element.
@@ -222,9 +218,9 @@ var ujs = (function () {
      * @method removeClasses
      * @param {DOMElement} element The DOM element.
      */
-    this.removeClasses = function (element) {
+    removeClasses: function(element) {
         element.setAttribute("class", "");
-    };
+    },
 
     /**
      * Add a style on a DOM element. if it exists it is not re-added.
@@ -233,32 +229,31 @@ var ujs = (function () {
      * @param {DOMElement} The DOM element.
      * @param {String} The style name.
      */
-    this.addStyle = function (element, styleName) {
+    addStyle: function(element, styleName) {
         if (styleName instanceof Array) {
             for (var i = 0, l = styleName.length; i < l; i++) {
-                this.addOnAttribute("style", element, styleName[i]);
+                ujs.addOnAttribute("style", element, styleName[i]);
             }
+        } else {
+            ujs.addOnAttribute("style", element, styleName);
         }
-        else {
-            this.addOnAttribute("style", element, styleName);
-        }
-    };
+    },
 
     /**
-      * Remove a style from a DOM element.
-      *
-      * @method removeStyle
-      * @param {DOMElement} The DOM element.
-      * @param {String} The style name.
-      */
-    this.removeStyle = function (element, styleName) {
+     * Remove a style from a DOM element.
+     *
+     * @method removeStyle
+     * @param {DOMElement} The DOM element.
+     * @param {String} The style name.
+     */
+    removeStyle: function(element, styleName) {
         if (styleName instanceof Array) {
             for (var i = 0, l = styleName.length; i < l; i++) {
-                this.removeOnAttribute("style", element, styleName[i]);
+                ujs.removeOnAttribute("style", element, styleName[i]);
             }
         }
-        this.removeOnAttribute("style", element, styleName);
-    };
+        ujs.removeOnAttribute("style", element, styleName);
+    },
 
     /**
      * Determine if the element has a class.
@@ -268,7 +263,7 @@ var ujs = (function () {
      * @param {String} The class name to search.
      * @return {Boolean} Return true if the element has the class name, otherwise return false.
      */
-    this.hasClass = function (element, className) {
+    hasClass: function(element, className) {
         var classes = element.getAttribute("class");
         var hasClass = false;
 
@@ -285,7 +280,7 @@ var ujs = (function () {
             }
         }
         return hasClass;
-    };
+    },
 
     /**
      * Merge two object in one object.
@@ -295,12 +290,12 @@ var ujs = (function () {
      * @param {Object} Another object.
      * @param {Object} An merged object.
      */
-    this.mergeObjects = function (object1, object2) {
+    mergeObjects: function(object1, object2) {
         var result = {};
 
         // Prepare the result var
         for (var i in object1) {
-            if(object1.hasOwnProperty(i)) {
+            if (object1.hasOwnProperty(i)) {
                 result[i] = object1[i];
             }
         }
@@ -309,44 +304,42 @@ var ujs = (function () {
         for (var i in object2) {
             if (object2.hasOwnProperty(i)) {
                 if (typeof object2[i] == 'object') {
-                    result[i] = this.mergeObjects(result[i], object2[i]);
-                } 
-                else {
+                    result[i] = ujs.mergeObjects(result[i], object2[i]);
+                } else {
                     result[i] = object2[i];
                 }
             }
         }
 
         return result;
-    };
-  
+    },
+
     /**
      * A simple ajax method to make GET and POST calls.
      *
      * @method ajax
      * @param {Object} An object of parameters.
-     * @exemple 
+     * @exemple
      *     parameters {
      *       url: "your_url.php",
      *       async: true,
      *       method: "POST",
      *       params: "id=25&age=45",
      *       callback: function (response) { }
-     *     }; 
+     *     };
      */
-    this.ajax = function (parameters) {
+    ajax: function(parameters) {
         var url = parameters.url;
         var method = parameters.method || "GET";
         var params = parameters.params || "";
         var callback = parameters.success || null;
-	    var async = (typeof(parameters.async) != "undefined") ? parameters.async : true;
+        var async = (typeof(parameters.async) != "undefined") ? parameters.async : true;
         var xhr;
-        
+
         // For browser
         if (typeof(window) !== "undefined") {
             xhr = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        else { // For node or Worker
+        } else { // For node or Worker
             xhr = new XMLHttpRequest();
         }
 
@@ -358,28 +351,27 @@ var ujs = (function () {
             xhr.setRequestHeader("Connection", "close");
 
             xhr.onreadystatechange = function() {
-            	if(xhr.readyState == 4 && xhr.status == 200) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
                     if (callback != null) {
                         callback(xhr.responseText);
                     }
                 }
             };
             xhr.send(params);
-        }
-        else {
+        } else {
             var finalUrl = params != "" ? url + "?" + params : url;
             xhr.open("GET", finalUrl, async);
 
-            xhr.onreadystatechange = function() { 
+            xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4) {
                     if (callback != null) {
                         callback(xhr.responseText);
                     }
-                }    
+                }
             };
             xhr.send(null);
         }
-    };
+    },
 
     /**
      * Load a css file and add it in the head tag.
@@ -388,20 +380,20 @@ var ujs = (function () {
      * @param {String} The path of the css file.
      * @param {Object} An object of paramaters for configure the tag.
      */
-    this.loadCSS = function (path, params) {
+    loadCSS: function(path, params) {
         var link = document.createElement("link");
         link.setAttribute("rel", "stylesheet");
         link.setAttribute("type", "text/css");
         link.setAttribute("href", path);
 
-        if (typeof (params) == "object") {
+        if (typeof(params) == "object") {
             for (var i in params) {
                 link.setAttribute(i, params[i]);
             }
         }
 
         document.getElementsByTagName("head")[0].appendChild(link);
-    };
+    },
 
     /**
      * Load a JavaScript file and add it at the end of the body
@@ -410,19 +402,19 @@ var ujs = (function () {
      * @param {String} The path of the css file
      * @param {Object} An object of paramaters for configure the tag
      */
-    this.loadJavaScript = function (path, params) {
+    loadJavaScript: function(path, params) {
         var js = document.createElement("script");
         js.setAttribute("src", path);
 
-        if (typeof (params) == "object") {
+        if (typeof(params) == "object") {
             for (var i in params) {
                 js.setAttribute(i, params[i]);
             }
         }
 
         document.getElementsByTagName("body")[0].appendChild(js);
-    };
-  
+    },
+
     /**
      * Test if an object is in an array
      *
@@ -431,9 +423,9 @@ var ujs = (function () {
      * @param {Array} An array of element
      * @return {Boolean} True if the searched element is in the array then false
      */
-    this.inArray = function (search, array) {
+    inArray: function(search, array) {
         return (array.indexOf(search) > -1);
-    };
+    },
 
     /**
      * Clone an array.
@@ -442,38 +434,37 @@ var ujs = (function () {
      * @param {Array} array The array to clone
      * @return {Array} The new array
      */
-    this.cloneArray = function(array) {
+    cloneArray: function(array) {
         var newArray = [];
         for (var i = 0, l = array.length; i < l; i++) {
             newArray[i] = array[i];
         }
         return newArray;
-    };
+    },
 
     /**
      * Inserts an object in a sorted array
      *
      * @method insertSorted
      * @param {Object} An object (can be a string, number, object)
-     * @param {Function} The sorting function, same arguments and return values as in array.sort 
+     * @param {Function} The sorting function, same arguments and return values as in array.sort
      * @param {Array} An array of element
      * @return {Array} array in input
      */
-    this.insertSorted = function(element, sortfunction, array) {
+    insertSorted: function(element, sortfunction, array) {
         var current = 0;
         if (array.length == 0) {
             array.push(element);
-        }
-        else { 
+        } else {
             while (current < array.length && sortfunction(element, array[current]) > 0) {
                 current++;
             }
 
-            array.splice(current,0,element);
+            array.splice(current, 0, element);
         }
 
         return array;
-    };
+    },
 
     /**
      * Gets elements by class name (alias to document.getElementsByClassName)
@@ -482,9 +473,9 @@ var ujs = (function () {
      * @param {String} Class of elements
      * @return {Array} An array of DOM elements with this class name
      */
-    this.getByClass = function (className) {
+    getByClass: function(className) {
         return document.getElementsByClassName(className);
-    };
+    },
 
     /**
      * Gets elements by tag name (alias to document.getElementsByTagName)
@@ -493,9 +484,9 @@ var ujs = (function () {
      * @param {String} Tag to search
      * @return {Array} An array of DOM elements with this tag name
      */
-    this.getByTag = function (tagName) {
+    getByTag: function(tagName) {
         return document.getElementsByTagName(tagName);
-    };
+    },
 
     /**
      * Gets an element by its id (alias to document.getElementById)
@@ -504,10 +495,10 @@ var ujs = (function () {
      * @param {String} Id of the element
      * @return {DOMElement} The DOM element with the specified id
      */
-    this.getById = function (id) {
+    getById: function(id) {
         return document.getElementById(id);
-    };
-  
+    },
+
     /**
      * Gets if an element is defined (alias to typeof(element) != "undefined")
      *
@@ -515,9 +506,9 @@ var ujs = (function () {
      * @param {DOMElement} A DOM element
      * @return {Boolean} True if defined then false
      */
-    this.isDef = function (element) {
+    isDef: function(element) {
         return typeof element != "undefined";
-    };
+    }
+};
 
-    return this;
-})();
+module.exports = ujs;
