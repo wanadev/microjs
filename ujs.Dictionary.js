@@ -1,4 +1,4 @@
-﻿/**
+/**
  * MicroJS aka ujs class library
  * Define an hybrid Dictionary collection.
  *
