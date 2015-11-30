@@ -3,18 +3,18 @@ Microjs
 
 ### 1. Qu'est ce que Microjs ?
 
-Microjs (ujs) est une petite bibliothèque JavaScript qui se veut légère. 
-Le but d'ujs est de proposer des fonctionnalités minimales mais nécessaires, lors du développement d'une application web en JavaScript.
+Microjs (ujs) est une petite bibliothÃ¨que JavaScript qui se veut lÃ©gÃ¨re. 
+Le but d'ujs est de proposer des fonctionnalitÃ©s minimales mais nÃ©cessaires, lors du dÃ©veloppement d'une application web en JavaScript.
 
-Vous trouverez aussi quelques extensions pour la bibliothèque afin d'étendre ses fonctionnalités.
+Vous trouverez aussi quelques extensions pour la bibliothÃ¨que afin d'Ã©tendre ses fonctionnalitÃ©s.
 
-### 2. Fonctionnalités
+### 2. FonctionnalitÃ©s
 
-* Déclanchement manuel d'un évènement sur un élément du dom ;
+* DÃ©clanchement manuel d'un Ã©vÃ¨nement sur un Ã©lÃ©ment du dom ;
 * Ajout/Suppression d'un attribut ;
 * Ajout/Suppression d'une classe ;
 * Ajout/Suppression d'un style ;
-* Ajax Get et Post (non compatible IE8 et inférieur) ;
+* Ajax Get et Post (non compatible IE8 et infÃ©rieur) ;
 * Quelques alias ;
 * Objet ArrayList (extension) ;
 * Objet Dictionary (extension).
@@ -34,17 +34,17 @@ ujs.ajax({
 });
 ```
 
-#### Déclanchement d'évènements
+#### DÃ©clanchement d'Ã©vÃ¨nements
 
 ```html
 <div id="btnValidate" class="button red">Valider</div>
 ```
 
 ```javascript
-// Récupération du bouton
+// RÃ©cupÃ©ration du bouton
 var button = ujs.getById("btnValidate");
 
-// Déclancher l'évenement click
+// DÃ©clancher l'Ã©venement click
 ujs.triggerEvent(button, "click");
 ```
 
@@ -55,13 +55,13 @@ ujs.triggerEvent(button, "click");
 ```
 
 ```javascript
-// Récupération du bouton
+// RÃ©cupÃ©ration du bouton
 var button = ujs.getById("btnValidate");
 
-// Ajoute la classe selected si elle n'est pas déjà présente
+// Ajoute la classe selected si elle n'est pas dÃ©jÃ  prÃ©sente
 ujs.addClass(button, "selected");
 
-// Supprime la classe selected si elle est présente
+// Supprime la classe selected si elle est prÃ©sente
 ujs.removeClass(button, "selected");
 ```
 
@@ -71,19 +71,19 @@ ujs.removeClass(button, "selected");
 // nouvelle instance de ArrayList
 var list = new ujs.ArrayList(); 
 
-// Ajoute un tableau à la collection
+// Ajoute un tableau Ã  la collection
 list.add([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
-// Ajoute un seul élément à la fin de la collection
+// Ajoute un seul Ã©lÃ©ment Ã  la fin de la collection
 list.add(45);
 
-// Supprime l'élément à la position 4
+// Supprime l'Ã©lÃ©ment Ã  la position 4
 list.removeAt(4);
 
-// Insère l'élément 42 à la position 4
+// InsÃ¨re l'Ã©lÃ©ment 42 Ã  la position 4
 list.insertAt(4, 42);
 
-// Boucle sur tous les éléments de la collection
+// Boucle sur tous les Ã©lÃ©ments de la collection
 list.forEach(function (el) { elements.push(el); });
 ```
 
@@ -93,10 +93,10 @@ list.forEach(function (el) { elements.push(el); });
 // Nouvelle instance de Dictionary
 var dictionary = new ujs.Dictionary();
 
-// Ajoute un élément
+// Ajoute un Ã©lÃ©ment
 dictionary.add("chat", { name: "Boby", age: 1 });
 
-// Création de 2 collections clé/valeur pour être ajoutées en une seule fois dans le dictionnaire
+// CrÃ©ation de 2 collections clÃ©/valeur pour Ãªtre ajoutÃ©es en une seule fois dans le dictionnaire
 var keys = ["animaux", "humains", "reptiles"];
 var values =  [{ name: "animal", age: 25 }, { name: "humain", age: 48 }, { name: "reptile", age: 18 }];
 
@@ -106,10 +106,10 @@ dictionary.addRange(keys, values);
 // Supression
 dictionary.remove("humains");
 
-// Création d'une nouvelle collection avec les valeurs d'une autre
+// CrÃ©ation d'une nouvelle collection avec les valeurs d'une autre
 var dico2 = dictionary.clone();
 
-// Modification de l'élément "chat"
+// Modification de l'Ã©lÃ©ment "chat"
 dico2.getElement("chat").foo = "bar";
 dico2.getElement("chat").age = 42;
 dico2.getElement("chat").name = "Miaou";
@@ -119,9 +119,9 @@ dico2.getElement("chat").bar = "foo";
 dico2.merge(dictionary);
 ```
 
-### 4. Construire la bibliothèque
+### 4. Construire la bibliothÃ¨que
 
-Pour construire les différents fichiers de la bibliothèque ainsi que la documentation, tapez la commande suivante :
+Pour construire les diffÃ©rents fichiers de la bibliothÃ¨que ainsi que la documentation, tapez la commande suivanteÂ :
 
     npm install
     npm run build
