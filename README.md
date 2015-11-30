@@ -29,7 +29,7 @@ ujs.ajax({
   url: "traitement.php",
   params: "action=1&user_id=45",
   success: function (response) {
-	console.log(response); // retour serveur
+    console.log(response); // retour serveur
   }
 });
 ```
@@ -88,6 +88,7 @@ list.forEach(function (el) { elements.push(el); });
 ```
 
 #### Utilisation de la classe Dictionary
+
 ```javascript
 // Nouvelle instance de Dictionary
 var dictionary = new ujs.Dictionary();
@@ -118,6 +119,14 @@ dico2.getElement("chat").bar = "foo";
 dico2.merge(dictionary);
 ```
 
-### 4. Licence
+### 4. Construire la bibliothèque
+
+Pour construire les différents fichiers de la bibliothèque ainsi que la documentation, tapez la commande suivante :
+
+    npm install
+    npm run build
+
+
+### 5. Licence
 
 Licence MIT, voir le fichier LICENSE pour plus d'information
