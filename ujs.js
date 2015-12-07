@@ -26,42 +26,26 @@ var ujs = {
     },
 
     /**
-     * Trigger an event and notify all subscribers that this event has been triggered.
-     * If the specified event isn't already created and cached, it's created and cached.
-     *
+     * Send a event to all listeners.
      * @method notify
-     * @param {String} The event name or an array of event names.
-     * @param {Boolean} Sets to true for using a non cached event.
-     * @return {Object} An object with paramaters (optional) or an array of objects used with event names.
+     * @static
+     * @param {String} name The event's name.
+     * @param {Object} params A object that contains parameters to send to listeners.
      */
-    notify: function(name, params, createNewEvent) {
-        createNewEvent = (typeof(createNewEvent) !== "undefined") ? createNewEvent : false;
-        if (name instanceof Array) {
-            params = (params instanceof Array) ? params : [];
-            for (var i = 0, l = name.length; i < l; i++) {
-                ujs.notify(name[i], (typeof(params[i]) !== "undefined") ? params[i] : {});
+    notify: function(name, params) {
+        var event = document.createEvent("HTMLEvents");
+        event.initEvent(name, true, false);
+
+        if (typeof(params) === "object") {
+            for (var i in params) {
+                event[i] = params[i];
             }
-        } else {
-            if (typeof(events[name]) != "undefined") {
-                var event = events[name];
+        }
 
-                if (createNewEvent) {
-                    event = document.createEvent("HTMLEvents");
-                    event.initEvent(name, true, false);
-                }
-
-                if (params instanceof Object) {
-                    for (var i in params) {
-                        event[i] = params[i];
-                    }
-                }
-
-                document.dispatchEvent(event);
-            } else {
-                events[name] = document.createEvent("HTMLEvents");
-                events[name].initEvent(name, true, false);
-                return ujs.notify(name, params);
-            }
+        try {
+            document.dispatchEvent(event);
+        } catch (e) {
+            // pass
         }
     },
 
@@ -289,9 +273,12 @@ var ujs = {
      * @param {Object} An object.
      * @param {Object} Another object.
      * @param {Object} An merged object.
+     * @param {Boolean} force_recursion
+     * @param {String} typeresult
      */
-    mergeObjects: function(object1, object2) {
-        var result = {};
+    mergeObjects: function(object1, object2, force_recursion, typeresult) {
+        var force_recursion = force_recursion === true ? true : false;
+        var result = typeresult == "array" ? [] : {};
 
         // Prepare the result var
         for (var i in object1) {
@@ -302,9 +289,11 @@ var ujs = {
 
         // merging
         for (var i in object2) {
-            if (object2.hasOwnProperty(i)) {
-                if (typeof object2[i] == 'object') {
-                    result[i] = ujs.mergeObjects(result[i], object2[i]);
+            if (object2.hasOwnProperty(i) && typeof(object2[i]) != "undefined") {
+                if (object2[i] instanceof Array && force_recursion) {
+                    result[i] = this.mergeObjects(result[i], object2[i], force_recursion, "array");
+                } else if (object2[i] instanceof Object && force_recursion) {
+                    result[i] = this.mergeObjects(result[i], object2[i]);
                 } else {
                     result[i] = object2[i];
                 }
@@ -315,25 +304,75 @@ var ujs = {
     },
 
     /**
+     * Get a property in nested objects???
+     *
+     * @function getProperty
+     * @param {Object} obj
+     * @param {String} path
+     * @return {} the property
+     */
+    getProperty: function(obj, path) {
+        var parts = path.split('.');
+        var i, tmp;
+        for (i = 0; i < parts.length; i++) {
+            tmp = obj[parts[i]];
+            if (i == parts.length - 1) {
+                return obj[parts[i]];
+            } else if (tmp === undefined) {
+                tmp = obj[parts[i]] = {};
+            }
+            obj = tmp;
+        }
+        return false;
+    },
+
+    /**
+     * Set a property in nested objects???
+     *
+     * @function setProperty
+     * @param {Object} obj
+     * @param {String} path
+     * @param {} value
+     * @return {} the property
+     */
+    setProperty: function(obj, path, value) {
+        var parts = path.split('.');
+        var i, tmp;
+        for (i = 0; i < parts.length; i++) {
+            tmp = obj[parts[i]];
+            if (value !== undefined && i == parts.length - 1) {
+                tmp = obj[parts[i]] = value;
+            } else if (tmp === undefined) {
+                tmp = obj[parts[i]] = {};
+            }
+            obj = tmp;
+        }
+        return obj;
+    },
+
+    /**
      * A simple ajax method to make GET and POST calls.
      *
      * @method ajax
-     * @param {Object} An object of parameters.
+     * @param {Object} parameters An object of parameters.
      * @exemple
      *     parameters {
      *       url: "your_url.php",
      *       async: true,
      *       method: "POST",
-     *       params: "id=25&age=45",
-     *       callback: function (response) { }
+     *       data: "id=25&age=45",
+     *       success: function (response) { },
+     *       error: function (response) { }
      *     };
      */
     ajax: function(parameters) {
         var url = parameters.url;
         var method = parameters.method || "GET";
-        var params = parameters.params || "";
-        var callback = parameters.success || null;
+        var params = parameters.params || parameters.data || "";
+        var callback = parameters.success || function() {};
+        var errorCallback = parameters.onerror || parameters.error || function() {};
         var async = (typeof(parameters.async) != "undefined") ? parameters.async : true;
+        var withCredentials = (typeof(parameters.withCredentials) != "undefined") ? parameters.withCredentials : false;
         var xhr;
 
         // For browser
@@ -343,17 +382,27 @@ var ujs = {
             xhr = new XMLHttpRequest();
         }
 
+        if (parameters.mimeType) {
+            xhr.overrideMimeType(parameters.mimeType);
+        }
+
         if (method == "POST") {
             xhr.open("POST", url, async);
 
+            if (withCredentials) {
+                xhr.withCredentials = true;
+            }
+
             xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            xhr.setRequestHeader("Content-length", params.length);
-            xhr.setRequestHeader("Connection", "close");
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == 4 && xhr.status == 200) {
                     if (callback != null) {
                         callback(xhr.responseText);
+                    }
+                } else if (xhr.readyState == 4 && xhr.status != 200) {
+                    if (errorCallback != null) {
+                        errorCallback();
                     }
                 }
             };
@@ -362,15 +411,35 @@ var ujs = {
             var finalUrl = params != "" ? url + "?" + params : url;
             xhr.open("GET", finalUrl, async);
 
+            if (withCredentials) {
+                xhr.withCredentials = true;
+            }
+
             xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
                     if (callback != null) {
                         callback(xhr.responseText);
+                    }
+                } else if (xhr.readyState == 4 && xhr.status != 200) {
+                    if (errorCallback != null) {
+                        errorCallback();
                     }
                 }
             };
             xhr.send(null);
         }
+    },
+
+    /**
+     * An alias to ajax method who make a POST operation.
+     * @method post
+     * @param {Object} An object of parameters.
+     */
+    post: function(url, parameters) {
+        var parameters = parameters || {};
+        parameters.method = "POST";
+        parameters.url = url;
+        return this.ajax(parameters);
     },
 
     /**
@@ -432,14 +501,49 @@ var ujs = {
      *
      * @method cloneArray
      * @param {Array} array The array to clone
+     * @param {Boolean} force_recursion
      * @return {Array} The new array
      */
-    cloneArray: function(array) {
+    cloneArray: function(array, force_recursion) {
         var newArray = [];
+        var force_recursion = force_recursion || false;
         for (var i = 0, l = array.length; i < l; i++) {
-            newArray[i] = array[i];
+            if (force_recursion) {
+                if (object[i] instanceof Array) {
+                    newArray[i] = this.cloneArray(array[i]);
+                } else if (array[i] instanceof Object) {
+                    newArray[i] = this.cloneObject(array[i]);
+                } else {
+                    newArray[i] = array[i];
+                }
+            } else {
+                newArray[i] = array[i];
+            }
         }
         return newArray;
+    },
+
+    /**
+     * Clone an object
+     *
+     * @method cloneObject
+     * @param {Object} object
+     * @return {Object} the clonned object
+     */
+    cloneObject: function(object) {
+        var newObject = {};
+        for (var i in object) {
+            if (object.hasOwnProperty(i)) {
+                if (object[i] instanceof Array) {
+                    newObject[i] = this.cloneArray(object[i]);
+                } else if (object[i] instanceof Object) {
+                    newObject[i] = this.cloneObject(object[i]);
+                } else {
+                    newObject[i] = object[i];
+                }
+            }
+        }
+        return newObject;
     },
 
     /**
@@ -508,6 +612,125 @@ var ujs = {
      */
     isDef: function(element) {
         return typeof element != "undefined";
+    },
+
+    /**
+     * Remove all spaces in a string.
+     *
+     * @method removeSpaces
+     * @param {String} The string to use.
+     * @return {String} The string with stripped spaces.
+     */
+    removeSpaces: function(str) {
+        var regExp = new RegExp("[ ]+", "g");
+        return str.replace(regExp, "");
+    },
+
+    /**
+     * Find a function nested into an object???
+     *
+     * @method stringToFunction
+     * @param {String} str
+     * @return {Function}
+     */
+    stringToFunction: function(str) {
+        var arr = str.split(".");
+
+        var fn = (window || this);
+        for (var i = 0, len = arr.length; i < len; i++) {
+            fn = fn[arr[i]];
+        }
+
+        if (typeof fn !== "function") {
+            throw new Error("function not found");
+        }
+
+        return fn;
+    },
+
+    /**
+     * Recursively deserializes an object
+     *
+     * @method deserializeObject
+     * @param {Object} hybrid The serialized object
+     * @param optionnalTarget
+     * @param propertyList
+     * @param blackList
+     * @return {Object} A deserialized Object
+     */
+    deserializeObject: function(hybrid, optionnalTarget, propertyList, blackList) {
+        var object = null;
+        var deserialized;
+        if (hybrid && hybrid.class && hybrid.class.name && !optionnalTarget) {
+            var classInstance = this.stringToFunction(hybrid.class.name);
+            object = classInstance.Deserialize(hybrid);
+        } else {
+            if (hybrid instanceof Array) {
+                if (hybrid.length == 0)
+                    return object;
+                object = optionnalTarget || [];
+                for (var i = 0; i < hybrid.length; i++) {
+                    deserialized = this.deserializeObject(hybrid[i]);
+                    if (deserialized !== null) object.push(deserialized);
+                }
+            } else if (hybrid instanceof Object) {
+                object = optionnalTarget || {};
+                for (var props in hybrid) {
+                    if ((!propertyList || (propertyList && propertyList.indexOf(props) != -1)) &&
+                        (!blackList || (blackList && blackList.indexOf(props) == -1))) {
+                        deserialized = this.deserializeObject(hybrid[props]);
+                        if (deserialized !== null) object[props] = deserialized;
+                    }
+                }
+            } else if (object !== undefined) {
+                object = hybrid;
+            }
+        }
+        return object;
+    },
+
+    /**
+     * Recursively serializes an object
+     *
+     * @method serializeObject
+     * @param {Object} hybrid The serialized object
+     * @param optionnalTarget
+     * @param propertyList
+     * @param blackList
+     * @return {Object} A deserialized Object
+     */
+    serializeObject: function(object, optionnalTarget, propertyList, blackList) {
+        var hybrid;
+        var ser;
+        if (object && object.serialize && !optionnalTarget) {
+            hybrid = object.serialize();
+        } else {
+            if (object instanceof Array) {
+                hybrid = [];
+                for (var i = 0; i < object.length; i++) {
+                    hybrid.push(this.serializeObject(object[i]));
+                }
+                if (hybrid.length == 0)
+                    return null;
+            } else if (object instanceof Object) {
+                if (!(object instanceof Function)) {
+                    hybrid = optionnalTarget || {};
+                    for (var props in object) {
+                        if (object.hasOwnProperty(props)) {
+                            if ((!propertyList || (propertyList && propertyList.indexOf(props) != -1)) &&
+                                (!blackList || (blackList && blackList.indexOf(props) == -1))) {
+                                ser = this.serializeObject(object[props]);
+                                // To avoid functions to be serialized as "undefined"
+                                if (ser !== undefined && ser !== null) hybrid[props] = ser;
+                            }
+                        }
+                    }
+                }
+            } else {
+                hybrid = object;
+            }
+        }
+        return hybrid;
     }
 };
 
