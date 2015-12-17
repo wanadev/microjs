@@ -547,6 +547,36 @@ var ujs = {
     },
 
     /**
+     * Clone an object smartly.
+     *
+     * @method smartClone
+     * @param {Object} object
+     * @return {Object} the clonned object
+     */
+    smartClone: function(object) {
+        var newObject = {};
+        for (var i in object) {
+            if (!(object[i] instanceof Function)) {
+                if (object[i] instanceof Array) {
+                    newObject[i] = [];
+                    for (var count = 0; count < object[i].length; count++) {
+                        newObject[i].push(u.smartClone(object[i][count]));
+                    }
+                } else if (object[i] instanceof Object) {
+                    if (object[i].clone && object[i].clone instanceof Function) {
+                        newObject[i] = object[i].clone();
+                    } else {
+                        newObject[i] = u.smartClone(object[i]);
+                    }
+                } else {
+                    newObject[i] = object[i];
+                }
+            }
+        }
+        return newObject;
+    },
+
+    /**
      * Inserts an object in a sorted array
      *
      * @method insertSorted
