@@ -1,4 +1,6 @@
 # Microjs
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/wanadev/microjs.svg)](https://greenkeeper.io/)
  
 ## What is microjs?
  
